@@ -36,23 +36,43 @@ const PageView = props => {
       pageLinkClassName = props.activeLinkClassName;
     }
   }
-
-  return (
-    <li className={pageClassName}>
-      <a
-        onClick={onClick}
-        role="button"
-        className={pageLinkClassName}
-        href={href}
-        tabIndex="0"
-        aria-label={ariaLabel}
-        aria-current={ariaCurrent}
-        onKeyPress={onClick}
-      >
-        {props.page}
-      </a>
-    </li>
-  );
+  
+  if (typeof props.activeLinkClassName === 'array') {
+    return (
+      <li className={pageClassName}>
+        <a
+          onClick={onClick}
+          role="button"
+          className={pageLinkClassName}
+          href={href}
+          tabIndex="0"
+          aria-label={ariaLabel}
+          aria-current={ariaCurrent}
+          onKeyPress={onClick}
+        >
+          {props.page}
+        </a>
+      </li>
+    );
+  }
+  else {
+    return (
+      <li className={pageClassName}>
+        <a
+          onClick={onClick}
+          role="button"
+          className={pageLinkClassName}
+          href={href}
+          tabIndex="0"
+          aria-label={ariaLabel}
+          aria-current={ariaCurrent}
+          onKeyPress={onClick}
+        >
+          {props.page}
+        </a>
+      </li>
+    );
+  }
 };
 
 PageView.propTypes = {
@@ -66,6 +86,7 @@ PageView.propTypes = {
   href: PropTypes.string,
   ariaLabel: PropTypes.string,
   page: PropTypes.number.isRequired,
+  customStyles: PropTypes.array,
 };
 
 export default PageView;
