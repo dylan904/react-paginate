@@ -32,6 +32,9 @@ export default class PaginationBoxView extends Component {
     breakLinkClassName: PropTypes.string,
     extraAriaContext: PropTypes.string,
     ariaLabelBuilder: PropTypes.func,
+    
+    onPageChanging: PropTypes.func,
+    bindArrowKeys: Proptypes.bool
   };
 
   static defaultProps = {
@@ -46,6 +49,7 @@ export default class PaginationBoxView extends Component {
     breakLabel: '...',
     disabledClassName: 'disabled',
     disableInitialCallback: false,
+    bindArrowKeys: false
   };
 
   constructor(props) {
@@ -81,7 +85,22 @@ export default class PaginationBoxView extends Component {
         'DEPRECATED (react-paginate): The extraAriaContext prop is deprecated. You should now use the ariaLabelBuilder instead.'
       );
     }
+    
+    if (this.props.bindArrowKeys) {
+      document.addEventListener("keydown", this.handleKeyDown.bind(this)) 
+    }
   }
+
+  handleKeyDown(e) {
+  	const { selected, pageCount } = this.state;
+    const keycode = e.which;
+		if (keycode === 37 && selected > 1) {
+		  this.gotoPage(selected - 1)
+		}
+		else if (keycode === 39 && selected < pageCount) {
+		  this.gotoPage(selected + 1)
+		}
+	}
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (
@@ -124,7 +143,7 @@ export default class PaginationBoxView extends Component {
 			}, this.props.delay)
 		}
 		else {
-			this.setState({ selected }, () => this.callCallback(selected, 'onPageChanged'))
+			this.setState({ selected }, () => this.callCallback(selected, 'onPageChange'))
 		}
     
   };
