@@ -118,7 +118,15 @@ export default class PaginationBoxView extends Component {
     // Call the callback with the new selected item:
     this.callCallback(selected, 'onPageChanging');
     
-    this.setState({ selected }, () => this.callCallback(selected, 'onPageChanged'))
+    if (this.props.delay) {
+			window.setTimeout(() => {
+				this.setState({ selected }, () => this.callCallback(selected, 'onPageChanged'))
+			}, this.props.delay)
+		}
+		else {
+			this.setState({ selected }, () => this.callCallback(selected, 'onPageChanged'))
+		}
+    
   };
 
   getForwardJump() {
